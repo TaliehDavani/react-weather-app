@@ -5,58 +5,45 @@ const api = {
 }
 
 function App() {
-  const [query, setQuery] = useState('');
+  const [city, setCity] = useState('');
   const [weather, setWeather] = useState({});
 
   const search = evt => {
     if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+      fetch(`${api.base}weather?q=${city}&units=metric&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
           setWeather(result);
-          setQuery('');
+          setCity('');
           console.log(result);
         });
     }
   }
 
-  const dateBuilder = (d) => {
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-    let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-
-    return `${day} ${date} ${month} ${year}`
-  }
-
   return (
-    <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
+    <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'warm-image' : 'cold-image') : 'cold-image'}>
       <main>
-        <div className="search-box">
+        <div className="search">
           <input 
             type="text"
-            className="search-bar"
+            className="search-text"
             placeholder="Search..."
-            onChange={e => setQuery(e.target.value)}
-            value={query}
+            onChange={e => setCity(e.target.value)}
+            value={city}
             onKeyPress={search}
           />
         </div>
         {(typeof weather.main != "undefined") ? (
         <div>
-          <div className="location-box">
-            <div className="location">{weather.name}, {weather.sys.country}</div>
-            <div className="date">{dateBuilder(new Date())}</div>
+          <div className="city">
+            <div className="city-name">{weather.name}, {weather.sys.country}</div>
           </div>
-          <div className="weather-box">
+          <div className="weather">
             <div className="temp">
               {Math.round(weather.main.temp)}°c
             </div>
-        <div className="weather">{weather.weather[0].main}</div>
-        <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}/>
+        <div className="weather-text">{weather.weather[0].main}</div>
+        <img  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}/>
           </div>
         </div>
         ) : ('')}
