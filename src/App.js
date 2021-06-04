@@ -16,6 +16,7 @@ function App() {
           setWeather(result);
           setCity('');
           console.log(result);
+          
         });
     }
   }
@@ -43,7 +44,7 @@ function App() {
               {Math.round(weather.main.temp)}°c
             </div>
         <div className="weather-text">{weather.weather[0].main}</div>
-        <img  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}/>
+        <img  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}/> 
           </div>
         </div>
         ) : ('')}
